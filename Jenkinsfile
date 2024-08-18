@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Build the Docker image
                     docker.build('simple-calculator')
                 }
             }
@@ -12,16 +13,18 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image('simple-calculator').inside {
+                    // Run tests inside the Docker container
+                    docker.image('simple-calculator').inside("-v ${pwd()}:/workspace -w /workspace") {
                         sh 'pytest tests/test_calculator.py'
                     }
                 }
             }
         }
-        stage('Deplyo') {
+        stage('Deploy') {
             steps {
                 script {
-                    docker.image('simple-calculator').inside {
+                    // Run the calculator inside the Docker container
+                    docker.image('simple-calculator').inside("-v ${pwd()}:/workspace -w /workspace") {
                         sh 'python calculator.py'
                     }
                 }
