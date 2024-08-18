@@ -1,51 +1,37 @@
 pipeline {
     agent any
 
-    environment {
-        JENKINS_IMAGE = 'jenkins-simulator'  // The custom Jenkins-like environment image
-        APP_IMAGE = 'simple-calculator'      // The application image
-    }
-
     stages {
-        stage('Build Jenkins Environment') {
+        stage('Build') {
             steps {
                 script {
-                    // Build the Docker image for the Jenkins-like environment
-                    docker.build("${JENKINS_IMAGE}", '.')
+                    // Build the Docker image
+                    docker.build('simple-calculator')
                 }
             }
         }
-        stage('Run Tests in Jenkins-like Environment') {
+        stage('Test') {
             steps {
                 script {
-                    // Run tests inside the Jenkins-like Docker environment
-                    docker.image("${JENKINS_IMAGE}").inside("-v ${pwd()}:/workspace -w /workspace") {
-                        sh '''
-                        #!/bin/bash
-                        set -e
-                        
-                        # Build the application Docker image
-                        docker build -t ${APP_IMAGE} .
-                        
-                        # Run tests inside the application Docker container
-                        docker run --rm -v "$(pwd)":/workspace -w /workspace ${APP_IMAGE} sh -c "pytest tests/test_calculator.py"
-                        '''
+                    // Convert Windows path to Unix style for Docker
+                    def workspaceUnix = "${env.WORKSPACE}".replaceAll('C:', '/c').replaceAll('\\\\', '/')
+                    
+                    // Run tests inside the Docker container
+                    docker.image('simple-calculator').inside("-v ${workspaceUnix}:/workspace -w /workspace") {
+                        sh 'pytest tests/test_calculator.py'
                     }
                 }
             }
         }
-        stage('Deploy in Jenkins-like Environment') {
+        stage('Deploy') {
             steps {
                 script {
-                    // Run the application inside the Jenkins-like Docker environment
-                    docker.image("${JENKINS_IMAGE}").inside("-v ${pwd()}:/workspace -w /workspace") {
-                        sh '''
-                        #!/bin/bash
-                        set -e
-                        
-                        # Run the application inside the application Docker container
-                        docker run --rm -v "$(pwd)":/workspace -w /workspace ${APP_IMAGE} sh -c "python calculator.py"
-                        '''
+                    // Convert Windows path to Unix style for Docker
+                    def workspaceUnix = "${env.WORKSPACE}".replaceAll('C:', '/c').replaceAll('\\\\', '/')
+                    
+                    // Run the calculator inside the Docker container
+                    docker.image('simple-calculator').inside("-v ${workspaceUnix}:/workspace -w /workspace") {
+                        sh 'python calculator.py'
                     }
                 }
             }
