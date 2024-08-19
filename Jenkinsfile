@@ -13,7 +13,9 @@ pipeline {
             steps {
                 script {
                     def workspaceUnixPath = pwd().replaceAll('C:', '/c').replaceAll('\\\\', '/')
-                    bat "docker run -v ${workspaceUnixPath}:/app -w /app -e PYTHONPATH=/app simple-calculator pytest -v /app/tests/test_calculator.py"
+                    bat """
+                    docker run -v ${workspaceUnixPath}:/app -w /app -e PYTHONPATH=/app simple-calculator /bin/bash -c "which pytest && pytest -v /app/tests/test_calculator.py"
+                    """
                 }
             }
         }
