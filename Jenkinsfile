@@ -9,17 +9,11 @@ pipeline {
                 }
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         script {
-                    
-        //         }
-        //     }
-        // }
         stage('Deploy') {
             steps {
                 script {
-                    docker.image('simple-calculator').inside {
+                    def workspaceUnixPath = pwd().replaceAll('\\\\', '/').replaceAll('C:', '/c')
+                    docker.image('simple-calculator').inside("-w ${workspaceUnixPath} -v ${workspaceUnixPath}:${workspaceUnixPath}") {
                         sh 'python calculator.py'
                     }
                 }
