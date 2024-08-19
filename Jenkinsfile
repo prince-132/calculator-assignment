@@ -13,8 +13,7 @@ pipeline {
             steps {
                 script {
                     def workspaceUnixPath = pwd().replaceAll('C:', '/c').replaceAll('\\\\', '/')
-                    // Install pytest and run tests inside the Docker container
-                    bat "docker run -v ${workspaceUnixPath}:${workspaceUnixPath} -w ${workspaceUnixPath} simple-calculator pip install pytest && pytest ./tests/test_calculator.py"
+                    bat "docker run -v ${workspaceUnixPath}:${workspaceUnixPath} -w ${workspaceUnixPath} simple-calculator python -m pytest ./tests/test_calculator.py"
                 }
             }
         }
