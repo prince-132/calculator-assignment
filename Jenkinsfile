@@ -13,7 +13,8 @@ pipeline {
             steps {
                 script {
                     def workspaceUnixPath = pwd().replaceAll('\\\\', '/').replaceAll('C:', '/c')
-                    docker.image('simple-calculator').inside("-w ${workspaceUnixPath} -v ${workspaceUnixPath}:${workspaceUnixPath}") {
+                    def absolutePath = "${env.WORKSPACE}/calculator"
+                    docker.image('simple-calculator').inside("-v ${absolutePath}:${absolutePath}") {
                         sh 'python calculator.py'
                     }
                 }
