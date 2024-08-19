@@ -19,7 +19,7 @@ def calculator(x, y, operator):
     else:
         return "Invalid operator"
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     print("Simple Calculator")
     x = int(input("Enter first number: "))
     y = int(input("Enter second number: "))
