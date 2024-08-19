@@ -21,9 +21,9 @@ def calculator(x, y, operator):
 
 if __name__ == "__main__":
     print("Simple Calculator")
-    x = int(input("Enter first number: "))
-    y = int(input("Enter second number: "))
-    operator = input("Enter operator (+, -, *): ")
+    x = 5
+    y = 4
+    operator = '-'
     
     result = calculator(x,y,operator)
     print("Result: ", result)
