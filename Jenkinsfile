@@ -12,9 +12,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    // If the test step is commented out, remove or close the script block properly
                     // docker.image('simple-calculator').inside {
                     //     sh 'pytest ./tests/test_calculator.py'
-                    }
+                    // }
                 }
             }
         }
