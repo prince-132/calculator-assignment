@@ -9,13 +9,13 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
+        // stage('Test') {
+        //     steps {
+        //         script {
                     
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
         stage('Deploy') {
             steps {
                 script {
