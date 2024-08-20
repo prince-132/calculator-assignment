@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+        stage('webhook') {
+            steps {
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/prince-132/calculator-assignment.git']])
+            }
+        }
         stage('Build') {
             steps {
                 script {
