@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build('simple-calculator')
+                    docker.build('calculator')
                 }
             }
         }
