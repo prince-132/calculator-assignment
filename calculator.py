@@ -27,3 +27,4 @@ if __name__ == "__main__":
     
     result = calculator(x,y,operator)
     print("Result: ", result)
+    
